@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+table, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 10px;
+}
+.selected {
+    background-color:#000000
+}
+.notselected {
+    background-color:#FFFFFF
+}
+</style>
+<head>
+	<title>H Webpage</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+Rows <input type="text" id="xSize" value="10" />
+Columns <input type="text" id="ySize" value="10" />
+<button type="button" id="generatebutton">Generate Grid</button>
+<div id="Gridstartshere"></div>
+<button type="button" id="gobutton">Apply Rules</button>
+<script>
+$(document).ready(function(){
+    
+    var output = "";
+        for (i = 0; i < Number(document.getElementById("ySize").value); i++) { 
+    		output = output + '<tr class=\"NotARealClass_AddedChart\">'
+    		for (p = 0; p < Number(document.getElementById("xSize").value); p++) {
+output = output + "<td class = \'notselected\' x=\'" + p.toString() + "\' y=\'" + i.toString() + "\' id=\'x" + p.toString() + 'y' + i.toString() + "\'>  </td>"
+    	} 
+    	output = output + '</tr>'
+}
+		$("#Gridstartshere").after(output)
+		$("td").on("click", function(){
+        if($(this).hasClass('selected')){
+   			$(this).removeClass('selected')
+		}else{
+  			$(this).addClass('selected')
+		}
+		if($(this).hasClass('notselected')){
+   			$(this).removeClass('notselected')
+		}else{
+  			$(this).addClass('notselected')
+		}
+    });
+document.getElementById("gobutton").onclick = function(){
+		$( "td" ).each(function() {
+			var Neighborcount = 0;
+			var origx= Number($(this).attr("x"))
+			var origy= Number($(this).attr("y"))
+			$( "td" ).each(function() {
+				if ((Number($(this).attr("x")) == origx+1)&&(Number($(this).attr("y")) == origy+1)&&($(this).hasClass('selected'))){
+					Neighborcount += 1
+				}
+				if ((Number($(this).attr("x")) == origx-1)&&(Number($(this).attr("y")) == origy+1)&&($(this).hasClass('selected'))){
+					Neighborcount += 1
+				}
+				if ((Number($(this).attr("x")) == origx)&&(Number($(this).attr("y")) == origy+1)&&($(this).hasClass('selected'))){
+					Neighborcount += 1
+				}
+				if ((Number($(this).attr("x")) == origx+1)&&(Number($(this).attr("y")) == origy-1)&&($(this).hasClass('selected'))){
+					Neighborcount += 1
+				}
+				if ((Number($(this).attr("x")) == origx-1)&&(Number($(this).attr("y")) == origy-1)&&($(this).hasClass('selected'))){
+					Neighborcount += 1
+				}
+				if ((Number($(this).attr("x")) == origx)&&(Number($(this).attr("y")) == origy-1)&&($(this).hasClass('selected'))){
+					Neighborcount += 1
+				}
+				if ((Number($(this).attr("x")) == origx+1)&&(Number($(this).attr("y")) == origy)&&($(this).hasClass('selected'))){
+					Neighborcount += 1
+				}
+				if ((Number($(this).attr("x")) == origx-1)&&(Number($(this).attr("y")) == origy)&&($(this).hasClass('selected'))){
+					Neighborcount += 1
+				}
+			})
+			if($(this).hasClass('selected')){
+	   			if (Neighborcount < 2){
+	   				$(this).addClass('tempnotselected')
+	   			} else if (Neighborcount <= 3){
+	   				$(this).addClass('tempselected')
+	   			} else {
+	   				$(this).addClass('tempnotselected')
+	   			}
+			} else if (Neighborcount == 3){
+				$(this).addClass('tempselected')
+			} else {
+				$(this).addClass('tempnotselected')
+			}
+		})
+		$( "td" ).each(function() {
+			$(this).removeClass('selected')
+			$(this).removeClass('notselected')
+			if($(this).hasClass('tempselected')){
+   				$(this).addClass('selected')
+			}
+			if($(this).hasClass('tempnotselected')){
+   				$(this).addClass('notselected')
+			}
+			$(this).removeClass('tempselected')
+			$(this).removeClass('tempnotselected')
+		})
+	}
+    $('#generatebutton').click(function(){
+    	$(".NotARealClass_AddedChart").remove();
+    	var output = "";
+        for (i = 0; i < Number(document.getElementById("ySize").value); i++) { 
+    		output = output + '<tr class=\"NotARealClass_AddedChart\">'
+    		for (p = 0; p < Number(document.getElementById("xSize").value); p++) {
+output = output + "<td class = \'notselected\' x=\'" + p.toString() + "\' y=\'" + i.toString() + "\' id=\'x" + p.toString() + 'y' + i.toString() + "\'>  </td>"
+    	} 
+    	output = output + '</tr>'
+}
+		$("#Gridstartshere").after(output)
+		$("td").on("click", function(){
+        if($(this).hasClass('selected')){
+   			$(this).removeClass('selected')
+		}else{
+  			$(this).addClass('selected')
+		}
+		if($(this).hasClass('notselected')){
+   			$(this).removeClass('notselected')
+		}else{
+  			$(this).addClass('notselected')
+		}
+    });
+    });
+
+});
+</script>
+</body>
+</html>
